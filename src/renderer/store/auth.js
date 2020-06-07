@@ -27,22 +27,26 @@ const auth = {
             formData.append('redirect_uri', redirect_url);
             formData.append('code', code);
 
-            return fetch(`https://api.monzo.com/oauth2/token`, {
-                method: 'POST',
-                body: formData
-            }).then(response => response.json()).then(result => {
-                const access_token = result.access_token;
+            return new Promise((resolve, reject) => {
+                fetch(`https://api.monzo.com/oauth2/token`, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json()).then(result => {
+                    const access_token = result.access_token;
 
-                if(access_token) {
-                    localStorage.setItem('access_token', access_token);
-                    commit('setAccessToken', access_token);
-                }
+                    if (access_token) {
+                        localStorage.setItem('access_token', access_token);
+                        commit('setAccessToken', access_token);
+                    }
 
-                if(result.error) {
-                    alert(result.error_description);
-                }
-            }).catch(error => {
-                console.log(error);
+                    if (result.error) {
+                        alert(result.error_description);
+                    }
+
+                    resolve(result);
+                }).catch(error => {
+                    reject(error);
+                });
             });
         },
 

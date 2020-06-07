@@ -4,25 +4,25 @@
             <div class="account-selector">
                 <div class="select-container">
                     <select name="" id="" @change="setSelectedAccount($event)">
-                        <option v-for="account in getActiveAccounts" :value="account.id" :selected="account.id === getSelectedAccount.id">{{ getAccountName(account) }}</option>
+                        <option v-for="account in activeAccounts" :value="account.id" :selected="account.id === selectedAccount.id">{{ getAccountName(account) }}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="account-details" v-if="getSelectedAccount">
-                <div class="detail balance" v-if="getSelectedAccount.balance">
+            <div class="account-details" v-if="selectedAccount">
+                <div class="detail balance" v-if="selectedAccount.balance">
                     <span class="small">Balance</span>
-                    <span class="large">{{ convertAmount(getSelectedAccount.balance.balance, getSelectedAccount.balance.currency) }}</span>
+                    <span class="large">{{ convertAmount(selectedAccount.balance.balance, selectedAccount.balance.currency) }}</span>
                 </div>
 
                 <div class="detail">
                     <span class="small">Sort code</span>
-                    <span class="large copyable" @click.prevent="copyToClipboard(getSelectedAccount.sort_code)">{{ getSelectedAccount.sort_code }}</span>
+                    <span class="large copyable" @click.prevent="copyToClipboard(selectedAccount.sort_code)">{{ selectedAccount.sort_code }}</span>
                 </div>
 
                 <div class="detail">
                     <span class="small">Account number</span>
-                    <span class="large copyable" @click.prevent="copyToClipboard(getSelectedAccount.account_number)">{{ getSelectedAccount.account_number }}</span>
+                    <span class="large copyable" @click.prevent="copyToClipboard(selectedAccount.account_number)">{{ selectedAccount.account_number }}</span>
                 </div>
             </div>
 
@@ -62,11 +62,11 @@
         },
 
         computed: {
-            getActiveAccounts() {
+            activeAccounts() {
                 return this.$store.getters.getActiveAccounts;
             },
 
-            getSelectedAccount() {
+            selectedAccount() {
                 return this.$store.getters.getSelectedAccount;
             }
         },

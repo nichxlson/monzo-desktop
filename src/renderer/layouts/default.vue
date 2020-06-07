@@ -26,6 +26,10 @@
         computed: {
             loggedIn() {
                 return this.$store.getters.getAccessToken;
+            },
+
+            selectedAccount() {
+                return this.$store.getters.getSelectedAccount;
             }
         },
 
@@ -77,9 +81,13 @@
                 }
             });
 
-            setInterval(function() {
-                $store.dispatch('getBalance');
-            }, 60000)
+            if(this.loggedIn) {
+                const selectedAccount = this.selectedAccount;
+
+                setInterval(function() {
+                    // $store.dispatch('getBalance', selectedAccount.id);
+                }, 60000);
+            }
         }
     }
 </script>

@@ -32,13 +32,16 @@
         },
 
         created() {
-            if(!this.getAccounts.length) {
-                this.$store.dispatch('getAccounts').then(result => {
-                    console.log(result);
-                }).catch(error => {
-                    if(error.code == 'forbidden.insufficient_permissions') {
+            const $store = this.$store;
 
-                    }
+            if(!this.getAccounts.length) {
+                $store.dispatch('getAccounts').then(result => {
+                    const accounts = result.accounts;
+
+                    accounts.forEach(account => {
+                        $store.dispatch('getBalance', account.id);
+                        $store.dispatch('getAllTransactions', account.id);
+                    });
                 });
             }
         }

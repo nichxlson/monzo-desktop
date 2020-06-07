@@ -2,9 +2,31 @@
     <div class="page">
         <h1>Transactions</h1>
 
-        <vue-good-table
-            :columns="columns"
-            :rows="rows"/>
+        <div class="transactions-container" v-if="transactions">
+            <div class="transaction" v-for="(transaction, index) in transactions" :key="transaction.id" :data-index="index">
+                <div class="top">
+                    <div class="logo" v-if="transaction.merchant">
+                        <img :src="transaction.merchant.logo" alt="" v-if="transaction.merchant.logo">
+                        <img :src="transaction.merchant.metadata.google_places_icon" alt="" v-else>
+                    </div>
+                    <div class="logo generated" v-else-if="transaction.counterparty">
+                        <span>{{ getAbbreviation(transaction.counterparty.name) }}</span>
+                    </div>
+                    <div class="logo" v-else></div>
+
+                    <div class="details">
+                        <span class="title" v-if="transaction.merchant">{{ transaction.merchant.name }}</span>
+                        <span class="title" v-else-if="transaction.counterparty">{{ transaction.counterparty.name }}</span>
+                        <span class="title" v-else>{{ transaction.description }}</span>
+                        <span class="notes" v-if="transaction.notes">{{ transaction.notes }}</span>
+                    </div>
+
+                    <div class="amount" v-if="!transaction.metadata.hide_amount">
+                        <span>{{ convertAmount(transaction.amount) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -46,9 +68,31 @@
             };
         },
 
+        methods: {
+            convertAmount(amount, currency) {
+                return this.$helpers.convertAmount(amount, currency);
+            },
+
+            getAbbreviation(str) {
+                return str.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '');
+            }
+        },
+
+        computed: {
+            selectedAccount() {
+                return this.$store.getters.getSelectedAccount;
+            },
+
+            transactions() {
+                return this.selectedAccount.transactions.reverse() ?? [];
+            }
+        },
 
         created() {
+            const $store = this.$store;
+            const selectedAccount = this.selectedAccount;
 
+            // $store.dispatch('getTransactions', selectedAccount.id);
         }
     }
 </script>
