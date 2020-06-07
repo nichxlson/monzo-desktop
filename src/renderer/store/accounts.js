@@ -6,13 +6,25 @@ const accounts = {
 
     mutations: {
         setAccounts(state, accounts) {
+            localStorage.setItem('accounts', accounts);
             state.accounts = accounts;
         },
 
         setSelectedAccount(state, account) {
+            localStorage.setItem('selected_account', account);
             state.selected_account = account;
+        },
+
+        setBalance(state, payload) {
+            const accounts = JSON.parse(state.accounts);
+            const account = accounts.find(account => account.id === payload.account_id);
+            Object.assign(account, {
+                balance: payload.data
+            });
+            this.commit('setAccounts', JSON.stringify(accounts));
         }
-    },
+    }
+    ,
 
     actions: {
         getAccounts({ commit, getters }) {
@@ -26,7 +38,6 @@ const accounts = {
                 const accounts = JSON.stringify(result.accounts);
 
                 if(accounts) {
-                    localStorage.setItem('accounts', accounts);
                     commit('setAccounts', accounts);
                 }
             }).catch(error => {
@@ -34,10 +45,38 @@ const accounts = {
             });
         },
 
-        setSelectedAccount({ commit }, account) {
-            localStorage.setItem('selected_account', account);
+        setSelectedAccount({ commit, dispatch }, account) {
             commit('setSelectedAccount', account);
-        }
+
+            dispatch('getBalance');
+        },
+
+        getBalance({ commit, getters }) {
+            const access_token = getters.getAccessToken;
+            const getSelectedAccount = getters.getSelectedAccount;
+
+            if(getSelectedAccount) {
+                const getSelectedAccountId = getSelectedAccount.id;
+
+                return fetch(`https://api.monzo.com/balance?account_id=${getSelectedAccountId}`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    },
+                    // body: formData
+                }).then(response => response.json()).then(result => {
+                    if(!result.error) {
+                        commit('setBalance', {
+                            account_id: getSelectedAccountId,
+                            data: result
+                        });
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+
+            return Error();
+        },
     },
 
     getters: {

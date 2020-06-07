@@ -17,6 +17,16 @@ export const helpers = {
                 return account.description;
             }
         }
+    },
+
+    convertAmount(amount, currency) {
+        const formatter = new Intl.NumberFormat('en-GB', {
+            style: 'currency',
+            currency: currency ?? 'GBP',
+            minimumFractionDigits: 2
+        });
+
+        return formatter.format(amount / 100);
     }
 };
 

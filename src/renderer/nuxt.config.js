@@ -15,7 +15,8 @@ module.exports = {
         '@/assets/scss/main.scss'
     ],
     plugins: [
-        '~/plugins/helpers'
+        '~/plugins/vue-good-table',
+        '~/plugins/helpers',
     ],
     buildModules: [],
     modules: [],

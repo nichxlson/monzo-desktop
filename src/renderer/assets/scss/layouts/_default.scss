@@ -2,6 +2,7 @@ html, body {
     width: 100%;
     font-family: $font-inter, sans-serif;
     background-color: #fafafa;
+    color: #222;
 }
 
 html, body, #__nuxt, #__layout, .main-app {
@@ -12,4 +13,19 @@ html, body, #__nuxt, #__layout, .main-app {
     display: flex;
     flex-direction: row;
     align-items: stretch;
+}
+
+main, .page {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+}
+
+.page {
+    padding: 20px;
+
+    h1 {
+        display: block;
+        margin-bottom: 20px;
+    }
 }

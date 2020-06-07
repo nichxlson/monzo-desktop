@@ -9,14 +9,14 @@
         display: block;
         padding: 10px 14px;
         font-size: 18px;
-        background-color: $colour-turquoise;
+        background-color: $colour-green;
         color: #fff;
         text-decoration: none;
         cursor: pointer;
         transition: background-color 0.2s;
 
         &:hover {
-            background-color: darken($colour-turquoise, 5%);
+            background-color: darken($colour-green, 5%);
         }
     }
 }

@@ -76,6 +76,10 @@
                     }
                 }
             });
+
+            setInterval(function() {
+                $store.dispatch('getBalance');
+            }, 60000)
         }
     }
 </script>

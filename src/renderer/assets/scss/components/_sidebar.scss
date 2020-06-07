@@ -3,4 +3,104 @@ aside.sidebar {
     width: 240px;
     flex-direction: column;
     background-color: $colour-dark-grey;
+
+    .account-selector {
+        padding: 20px 20px 0;
+
+        .select-container {
+            height: 32px;
+            position: relative;
+
+            select {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                appearance: none;
+                border: 1px solid rgba(#fff, 0.1);
+                border-radius: 3px;
+                background-color: rgba(#fff, 0.05);
+                padding: 0 10px 1px;
+                font-family: $font-inter;
+                font-size: 14px;
+                color: #fff;
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 12px;
+                margin-top: -5px;
+                width: 5px;
+                height: 5px;
+                border-right: 1px solid rgba(#fff, 0.5);
+                border-bottom: 1px solid rgba(#fff, 0.5);
+                transform: rotate(45deg);
+                pointer-events: none;
+            }
+        }
+    }
+
+    .account-details {
+        padding: 20px 20px;
+
+        .detail {
+            margin-bottom: 15px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+
+        .detail {
+            span {
+                display: block;
+                color: #fff;
+
+                &.small {
+                    font-weight: $font-weight-semi-bold;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    margin-bottom: 5px;
+                    opacity: 0.3;
+                }
+
+                &.large {
+                    font-size: 20px;
+                }
+                
+                &.copyable {
+                    cursor: pointer;
+                }
+            }
+
+            &.balance {
+                span {
+                    &.large {
+                        //color: $colour-green;
+                    }
+                }
+            }
+        }
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+
+        a {
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            background-color: transparent;
+            transition: background-color 0.2s;
+
+            &.nuxt-link-active, &:hover {
+                background-color: rgba(#000, 0.2);
+            }
+        }
+    }
 }
