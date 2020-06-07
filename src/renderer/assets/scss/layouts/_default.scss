@@ -1,0 +1,15 @@
+html, body {
+    width: 100%;
+    font-family: $font-inter, sans-serif;
+    background-color: #fafafa;
+}
+
+html, body, #__nuxt, #__layout, .main-app {
+    height: 100%;
+}
+
+.main-app {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
