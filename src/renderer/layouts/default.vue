@@ -8,6 +8,10 @@
     </div>
     <div class="main-app" v-else>
         <login />
+
+        <transition name="fade2">
+            <auth-popup v-if="accessToken" />
+        </transition>
     </div>
 </template>
 
@@ -16,20 +20,26 @@
 
     import login from '@/components/login.vue';
     import sidebar from '@/components/sidebar.vue';
+    import authPopup from '@/components/auth-popup.vue';
 
     export default {
         components: {
             login,
             sidebar,
+            authPopup,
         },
 
         computed: {
             loggedIn() {
-                return this.$store.getters.getAccessToken;
+                return this.$store.getters.getLoggedIn;
             },
 
             selectedAccount() {
                 return this.$store.getters.getSelectedAccount;
+            },
+
+            accessToken() {
+                return this.$store.getters.getAccessToken;
             }
         },
 

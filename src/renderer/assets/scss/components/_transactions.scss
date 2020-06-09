@@ -11,7 +11,7 @@
         .top {
             display: flex;
             height: 50px;
-            background-color: #eee;
+            background-color: $colour-grey;
             flex-direction: row;
             align-items: center;
             padding: 0 10px;
@@ -45,7 +45,7 @@
             }
 
             &.generated {
-                background-color: #ccc;
+                background-color: rgba(#000, 0.05);
                 border-radius: 3px;
                 padding: 0 3px;
             }

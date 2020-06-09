@@ -32,6 +32,10 @@
                 <router-link to="/pots"><span>Pots</span></router-link>
             </nav>
         </div>
+
+        <div class="bottom">
+            <a href="#" @click.prevent="logout">Logout</a>
+        </div>
     </aside>
 </template>
 
@@ -58,6 +62,14 @@
                 var result = document.execCommand('copy');
                 document.body.removeChild(input);
                 return result;
+            },
+
+            logout() {
+                const $router = this.$router;
+
+                this.$store.dispatch('logout').then(result => {
+                    $router.replace('/');
+                });
             }
         },
 

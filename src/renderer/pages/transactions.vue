@@ -84,7 +84,7 @@
             },
 
             transactions() {
-                return this.selectedAccount.transactions.reverse() ?? [];
+                return this.selectedAccount.transactions ?? [];
             }
         },
 

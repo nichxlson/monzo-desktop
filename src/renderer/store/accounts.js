@@ -25,27 +25,22 @@ const accounts = {
 
             this.commit('setAccounts', JSON.stringify(accounts));
         }
-    }
-    ,
+    },
 
     actions: {
         getAccounts({ commit, getters }) {
-            const access_token = getters.getAccessToken;
+            const accessToken = getters.getAccessToken;
 
             return new Promise((resolve, reject) => {
                 fetch(`https://api.monzo.com/accounts`, {
                     headers: {
-                        Authorization: `Bearer ${access_token}`
+                        Authorization: `Bearer ${accessToken}`
                     }
                 }).then(response => response.json()).then(result => {
                     const accounts = JSON.stringify(result.accounts);
 
                     if(accounts) {
                         commit('setAccounts', accounts);
-                    }
-
-                    if(result.code && result.code === 'forbidden.insufficient_permissions') {
-                        alert('Please allow access to your data on the Monzo app');
                     }
 
                     resolve(result);
@@ -61,13 +56,13 @@ const accounts = {
         },
 
         getBalance({ commit, getters }, accountId) {
-            const access_token = getters.getAccessToken;
+            const accessToken = getters.getAccessToken;
 
             return new Promise((resolve, reject) => {
                 if(accountId) {
                     fetch(`https://api.monzo.com/balance?account_id=${accountId}`, {
                         headers: {
-                            Authorization: `Bearer ${access_token}`
+                            Authorization: `Bearer ${accessToken}`
                         },
                         // body: formData
                     }).then(response => response.json()).then(result => {

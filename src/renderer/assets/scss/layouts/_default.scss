@@ -1,8 +1,8 @@
 html, body {
     width: 100%;
     font-family: $font-inter, sans-serif;
-    background-color: #fafafa;
-    color: #222;
+    background-color: $colour-white;
+    color: $colour-dark-navy;
 }
 
 html, body, #__nuxt, #__layout, .main-app {

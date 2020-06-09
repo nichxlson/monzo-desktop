@@ -2,7 +2,26 @@ aside.sidebar {
     display: flex;
     width: 240px;
     flex-direction: column;
-    background-color: $colour-dark-grey;
+    background-color: $colour-dark-navy;
+
+    .top {
+        flex: 1 0;
+    }
+
+    .bottom {
+        width: 100%;
+
+        a {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            background-color: rgba(#000, 0.2);
+            transition: background-color 0.2s;
+        }
+    }
 
     .account-selector {
         padding: 20px 20px 0;

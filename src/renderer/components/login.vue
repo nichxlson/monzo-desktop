@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <a @click="openUrl(loginUrl)" class="button">Login with your Monzo account</a>
+        <a @click="openUrl(loginUrl)" class="button primary">Login with your Monzo account</a>
     </div>
 </template>
 
