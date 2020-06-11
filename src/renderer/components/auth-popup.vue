@@ -48,6 +48,19 @@
                 })).then(() => {
                     if(success) {
                         $store.commit('setLoggedIn', true);
+
+                        const activePersonalAccount = accounts.slice().find(account => !account.closed && account.type == 'uk_retail');
+
+                        if(activePersonalAccount) {
+                            $store.dispatch('addFeedItem', {
+                                accountId: activePersonalAccount.id,
+                                data: {
+                                    title: 'Welcome to Monzo Desktop',
+                                    image_url: 'https://i.pinimg.com/600x315/d8/b7/d6/d8b7d60c41fec4c1e3d5b0b9facc2b4e.jpg',
+                                    body: 'You are now set up to use Monzo Desktop'
+                                }
+                            });
+                        }
                     } else {
                         alert('Please try again');
                     }

@@ -94,8 +94,9 @@
             if(this.loggedIn) {
                 const selectedAccount = this.selectedAccount;
 
-                setInterval(function() {
-                    // $store.dispatch('getBalance', selectedAccount.id);
+                setInterval(() => {
+                    $store.dispatch('getBalance', selectedAccount.id);
+                    $store.dispatch('getTransactions', selectedAccount.id);
                 }, 60000);
             }
         }

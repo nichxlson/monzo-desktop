@@ -1,70 +1,65 @@
 <template>
-    <div class="page">
-        <h1>Transactions</h1>
+    <div class="page no-padding">
+        <div class="transactions-container" v-if="transactions.length">
+            <vue-good-table :columns="columns" :rows="transactions" :pagination-options="pagination_options" :group-options="grouped_options">
+                <template slot="table-header-row" slot-scope="props">
+                    <div class="row-details">
+                        <span class="date">{{ props.row.label }}</span>
+                        <span class="total">{{ props.row.total }}</span>
+                    </div>
+                </template>
 
-        <div class="transactions-container" v-if="transactions">
-            <div class="transaction" v-for="(transaction, index) in transactions" :key="transaction.id" :data-index="index">
-                <div class="top">
-                    <div class="logo" v-if="transaction.merchant">
-                        <img :src="transaction.merchant.logo" alt="" v-if="transaction.merchant.logo">
-                        <img :src="transaction.merchant.metadata.google_places_icon" alt="" v-else>
-                    </div>
-                    <div class="logo generated" v-else-if="transaction.counterparty">
-                        <span>{{ getAbbreviation(transaction.counterparty.name) }}</span>
-                    </div>
-                    <div class="logo" v-else></div>
+                <template slot="table-row" slot-scope="props">
+                    <div class="row-info" v-if="props.column.field == 'info'">
+                        <div class="logo" v-if="props.row.merchant">
+                            <img :src="props.row.merchant.logo" alt="" v-if="props.row.merchant.logo">
+                            <img class="icon" :src="props.row.merchant.metadata.google_places_icon" alt="" v-else>
+                        </div>
+                        <div class="logo generated" v-else-if="props.row.counterparty">
+                            <span>{{ props.row.counterparty.abbreviation }}</span>
+                        </div>
+                        <div class="logo" v-else></div>
 
-                    <div class="details">
-                        <span class="title" v-if="transaction.merchant">{{ transaction.merchant.name }}</span>
-                        <span class="title" v-else-if="transaction.counterparty">{{ transaction.counterparty.name }}</span>
-                        <span class="title" v-else>{{ transaction.description }}</span>
-                        <span class="notes" v-if="transaction.notes">{{ transaction.notes }}</span>
+                        <div class="details">
+                            <span class="title" v-if="props.row.merchant">{{ props.row.merchant.name }}</span>
+                            <span class="title" v-else-if="props.row.counterparty">{{ props.row.counterparty.name }}</span>
+                            <span class="title" v-else>{{ props.row.description }}</span>
+                            <span class="notes" v-if="props.row.notes">{{ props.row.notes }}</span>
+                        </div>
                     </div>
-
-                    <div class="amount" v-if="!transaction.metadata.hide_amount">
-                        <span>{{ convertAmount(transaction.amount) }}</span>
+                    <div class="right" :class="{ 'positive': props.row.amount > 0, 'neutral': props.row.amount == 0, 'negative': props.row.amount < 0 }" v-else-if="props.column.field == 'amount'">
+                        <span class="tag" v-if="props.row.category_formatted">{{ props.row.category_formatted }}</span>
+                        <span class="amount">{{ props.row.amount_converted }}</span>
                     </div>
-                </div>
-            </div>
+                    <span v-else>{{ props.formattedRow[props.column.field] }}</span>
+                </template>
+            </vue-good-table>
         </div>
     </div>
 </template>
 
 <script>
+    const moment = require('moment');
+
     export default {
         data() {
             return {
-                columns: [
-                    {
-                        label: 'Name',
-                        field: 'name',
-                    },
-                    {
-                        label: 'Age',
-                        field: 'age',
-                        type: 'number',
-                    },
-                    {
-                        label: 'Created On',
-                        field: 'createdAt',
-                        type: 'date',
-                        dateInputFormat: 'yyyy-MM-dd',
-                        dateOutputFormat: 'MMM Do yy',
-                    },
-                    {
-                        label: 'Percent',
-                        field: 'score',
-                        type: 'percentage',
-                    },
-                ],
-                rows: [
-                    { id:1, name:"John", age: 20, createdAt: '',score: 0.03343 },
-                    { id:2, name:"Jane", age: 24, createdAt: '2011-10-31', score: 0.03343 },
-                    { id:3, name:"Susan", age: 16, createdAt: '2011-10-30', score: 0.03343 },
-                    { id:4, name:"Chris", age: 55, createdAt: '2011-10-11', score: 0.03343 },
-                    { id:5, name:"Dan", age: 40, createdAt: '2011-10-21', score: 0.03343 },
-                    { id:6, name:"John", age: 20, createdAt: '2011-10-31', score: 0.03343 },
-                ],
+                columns: [{
+                    label: 'Info',
+                    field: 'info',
+                }, {
+                    label: 'Amount',
+                    field: 'amount',
+                    type: 'number',
+                }],
+                pagination_options: {
+                    enabled: false,
+                    mode: 'records',
+                    perPage: 5
+                },
+                grouped_options: {
+                    enabled: true
+                }
             };
         },
 
@@ -75,6 +70,10 @@
 
             getAbbreviation(str) {
                 return str.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '');
+            },
+
+            transactionsTotal(transactions) {
+                return transactions.reduce((total, transaction) => total + transaction.amount, 0);
             }
         },
 
@@ -84,8 +83,44 @@
             },
 
             transactions() {
-                return this.selectedAccount.transactions ?? [];
-            }
+                const transactions = this.selectedAccount.transactions.slice().reverse() ?? [];
+                const $helpers = this.$helpers;
+
+                const groups = transactions.reduce((groups, transaction) => {
+                    const date = transaction.created.split('T')[0];
+
+                    if(!groups[date]) {
+                        groups[date] = [];
+                    }
+
+                    if(transaction.counterparty.name) {
+                        transaction.counterparty.abbreviation = transaction.counterparty.name.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '');
+                    }
+
+                    transaction.amount_converted = $helpers.convertAmount(transaction.amount, transaction.currency);
+                    transaction.category_formatted = transaction.category.replace('_', ' ');
+
+                    groups[date].push(transaction);
+
+                    return groups;
+                }, {});
+
+                const groupArrays = Object.keys(groups).map(date => {
+                    const groupTransactions = groups[date];
+
+                    date = moment(date).format('dddd, D MMM');
+
+                    return {
+                        mode: 'span',
+                        label: date,
+                        total: this.convertAmount(groupTransactions.reduce((total, transaction) => total + transaction.amount, 0)),
+                        html: false,
+                        children: groupTransactions
+                    };
+                });
+
+                return groupArrays;
+            },
         },
 
         created() {

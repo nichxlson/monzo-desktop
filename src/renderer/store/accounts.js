@@ -53,6 +53,7 @@ const accounts = {
         setSelectedAccount({ commit, dispatch }, accountId) {
             commit('setSelectedAccount', accountId);
             dispatch('getBalance', accountId);
+            dispatch('getTransactions', accountId);
         },
 
         getBalance({ commit, getters }, accountId) {
@@ -82,6 +83,41 @@ const accounts = {
                 }
             });
         },
+
+        addFeedItem({ getters }, { accountId, data }) {
+            const accessToken = getters.getAccessToken;
+
+            let stringData = `account_id=${accountId}&type=basic`;
+
+            Object.entries(data).forEach(([key, value]) => {
+                let encodedValue = encodeURIComponent(value);
+
+                if(stringData.length) {
+                    stringData += `&params[${key}]=${encodedValue}`;
+                } else {
+                    stringData += `params[${key}]=${encodedValue}`;
+                }
+            });
+
+            return new Promise((resolve, reject) => {
+                if(accountId) {
+                    fetch(`https://api.monzo.com/feed`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: stringData
+                    }).then(response => response.json()).then(result => {
+                        resolve(result);
+                    }).catch(error => {
+                        reject(error);
+                    });
+                } else {
+                    reject();
+                }
+            });
+        }
     },
 
     getters: {

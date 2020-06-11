@@ -1,6 +1,7 @@
 @font-face {
     font-family: $font-inter;
-    src: url('../fonts/inter/Inter-Regular.woff2') format('woff2'),
+    src: url('../fonts/inter/Inter-Variable.woff2') format('woff2-variations'),
+    url('../fonts/inter/Inter-Regular.woff2') format('woff2'),
     url('../fonts/inter/Inter-Regular.woff') format('woff');
     font-weight: $font-weight-regular;
     font-style: normal;
@@ -9,7 +10,8 @@
 
 @font-face {
     font-family: $font-inter;
-    src: url('../fonts/inter/Inter-SemiBold.woff2') format('woff2'),
+    src: url('../fonts/inter/Inter-Variable.woff2') format('woff2-variations'),
+    url('../fonts/inter/Inter-SemiBold.woff2') format('woff2'),
     url('../fonts/inter/Inter-SemiBold.woff') format('woff');
     font-weight: $font-weight-semi-bold;
     font-style: normal;
@@ -18,7 +20,8 @@
 
 @font-face {
     font-family: $font-inter;
-    src: url('../fonts/inter/Inter-Bold.woff2') format('woff2'),
+    src: url('../fonts/inter/Inter-Variable.woff2') format('woff2-variations'),
+    url('../fonts/inter/Inter-Bold.woff2') format('woff2'),
     url('../fonts/inter/Inter-Bold.woff') format('woff');
     font-weight: $font-weight-bold;
     font-style: normal;
