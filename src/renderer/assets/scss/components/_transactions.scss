@@ -1,8 +1,21 @@
 .transactions-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex: 1 auto;
     overflow: auto;
+
+    .transactions-filters {
+        flex-shrink: 0;
+        width: 240px;
+        background-color: #fafafa;
+        border-right: 1px solid $colour-grey;
+        padding: 20px;
+    }
+
+    .transactions-list {
+        flex: 1 auto;
+        overflow: auto;
+    }
 
     .vgt-wrap {
         .vgt-table {
@@ -57,10 +70,11 @@
         }
 
         td {
+            height: 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 20px;
+            padding: 0 20px;
         }
 
         th {
@@ -111,6 +125,31 @@
             border-radius: 5px;
             box-sizing: border-box;
             background-color: $colour-grey;
+            position: relative;
+
+            .user {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                width: 22px;
+                height: 22px;
+                background-color: $colour-navy;
+                color: #fff;
+                border-radius: 100%;
+                top: 0;
+                right: 0;
+                transform: translate(50%, -50%) scale(0.8);
+                opacity: 0.8;
+
+                span {
+                    text-align: center;
+                    font-size: 10px;
+                    font-variation-settings: 'wght' $font-weight-regular;
+                    font-weight: $font-weight-regular;
+                }
+            }
 
             img {
                 width: 100%;
@@ -131,10 +170,11 @@
                 text-overflow: ellipsis;
                 display: block;
                 width: 100%;
+                opacity: 0.8;
             }
 
             &.generated {
-                border-radius: 5px;
+                border-radius: 100%;
                 padding: 0 3px;
             }
         }
@@ -143,10 +183,43 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: flex-start;
             flex: 1 auto;
 
             span.title {
                 font-size: 14px;
+            }
+
+            .other-text {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 5px;
+
+                span {
+                    margin-top: 0 !important;
+                    margin-right: 5px;
+                    font-size: 12px;
+                    color: rgba($colour-navy, 0.5);
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            span.tag {
+                margin-top: 5px;
+                font-size: 12px;
+                text-transform: capitalize;
+                padding: 3px;
+                background-color: $colour-grey;
+                border-radius: 5px;
+
+                &.person {
+                    background-color: $colour-navy;
+                    color: #fff;
+                }
             }
 
             span.notes {
@@ -158,8 +231,8 @@
 
         .right {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-end;
             justify-content: space-between;
 
             span {
@@ -183,6 +256,16 @@
                 display: block;
                 white-space: nowrap;
                 font-size: 14px;
+                font-variation-settings: 'wght' $font-weight-medium;
+                font-weight: $font-weight-medium;
+            }
+
+            span.time {
+                margin-top: 5px;
+                display: block;
+                white-space: nowrap;
+                font-size: 12px;
+                opacity: 0.5;
             }
 
             &.positive {
@@ -193,7 +276,7 @@
 
             &.negative {
                 span.amount {
-                    color: #b93b3e;
+                    color: #cb4043;
                 }
             }
         }
