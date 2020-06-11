@@ -3,6 +3,8 @@ aside.sidebar {
     width: 240px;
     flex-direction: column;
     background-color: $colour-dark-navy;
+    position: relative;
+    z-index: 2;
 
     .top {
         flex: 1 0;

@@ -63,6 +63,8 @@
     const moment = require('moment');
 
     export default {
+        transition: 'slide',
+
         data() {
             return {
                 columns: [{

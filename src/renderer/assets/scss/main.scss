@@ -18,3 +18,19 @@
 .fade2-enter, .fade2-leave-to {
     opacity: 0;
 }
+
+.slide {
+    &-enter-active, &-leave-active {
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    &-enter, &-leave-to {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    &-enter-to, &-leave {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
