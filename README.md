@@ -1,6 +1,6 @@
-# monzo-desktop
+# Monzo Desktop App
 
-> Monzo Desktop App
+![alt text](https://raw.githubusercontent.com/nichxlson/monzo-desktop/master/Screenshot%202021-06-15%20at%2023.19.17.png "Screenshot")
 
 #### Build Setup
 
